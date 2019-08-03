@@ -46,7 +46,7 @@ int main(int argc, string argv[])
     // Try all possible passwords at each length up to the MAX_PWD_LEN
     for (int current_length = 0; current_length <= MAX_PWD_LEN; current_length++)
     {
-        if(crack(0, current_length, brute, hash, salt))
+        if (crack(0, current_length, brute, hash, salt))
         {
             printf("%s\n", brute);
             return 0;
@@ -71,16 +71,16 @@ int crack(int pos, int len, char *brute, char *hash, char *salt)
         if (strcmp(hash, brute_hash) == 0)
         {
             //printf("%s -> %s\n", brute, hash);
-            return(TRUE);
+            return (TRUE);
         }
         else
         {
-            return(FALSE);
+            return (FALSE);
         }
     }
     else
     {
-        for( c = 'A'; c <= 'z' ; c++ )
+        for (c = 'A'; c <= 'z' ; c++)
         {
             // If reached the end of capital ASCII characters, move c to the begining
             // of lowercase characters
@@ -95,10 +95,10 @@ int crack(int pos, int len, char *brute, char *hash, char *salt)
             pos++;
             if (crack(pos, len, brute, hash, salt))
             {
-                return(TRUE);
+                return (TRUE);
             }
             pos--;
         }
     }
-    return(FALSE);
+    return (FALSE);
 }

@@ -21,13 +21,12 @@ int main(int argc, char *argv[])
 
     uint8_t buffer[512] = "\0";
 
-    int file_number = 0;
-    char filename[8] = "\0";
     FILE *img = NULL;
     bool file_open = false;
-    int bytes_in_block = fread(buffer, 1, 512, raw_file);
+    char filename[8] = "\0";
+    int file_number = 0;
 
-    while (bytes_in_block == 512)
+    while (fread(buffer, 1, 512, raw_file) == 512)
     {
         if (is_jpg_header(buffer))
         {
@@ -41,10 +40,13 @@ int main(int argc, char *argv[])
         }
         if (file_open)
         {
-            fwrite(buffer, 1, 512, img);
+            fwrite(buffer, 512, 1, img);
         }
+    }
 
-        bytes_in_block = fread(buffer, 1, 512, raw_file);
+    if (img)
+    {
+        fclose(img);
     }
 }
 

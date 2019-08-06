@@ -44,6 +44,11 @@ int main(int argc, char *argv[])
         }
     }
 
+    if (raw_file)
+    {
+        fclose(raw_file);
+    }
+    
     if (img)
     {
         fclose(img);

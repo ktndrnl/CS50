@@ -9,7 +9,8 @@
 #include "dictionary.h"
 
 // Represents number of buckets in a hash table
-#define N 26
+//186019
+#define N 500009
 
 // Represents a node in a hash table
 typedef struct node
@@ -27,8 +28,26 @@ void unload_node(node *ptr);
 // Hashes word to a number between 0 and 25, inclusive, based on its first letter
 unsigned int hash(const char *word)
 {
-    return tolower(word[0]) - 'a';
+    // unsigned int hash = 5381;
+    // int length = strlen(word);
+    // for (unsigned int i = 0; i < length; i++)
+    // {
+    //     hash = ((hash << 5) + hash) + (word[i]);
+    // }
+
+    unsigned long hash = 5381;
+    int c;
+
+    while ((c = *word++))
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+
+    return hash % N;
+    //return hash > N ? hash % N : hash;
+
+    //return tolower(word[0]) - 'a';
 }
+
+int num_collisions = 0;
 
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
@@ -63,6 +82,14 @@ bool load(const char *dictionary)
         strcpy(word_node->word, word);
 
         unsigned int word_hash = hash(word);
+        //printf("%i\n", word_hash);
+        if (hashtable[word_hash])
+        {
+            num_collisions++;
+            printf("\rCollisions: %i", num_collisions);
+            fflush(stdout);
+        }
+        
         word_node->next = hashtable[word_hash];
         hashtable[word_hash] = word_node;
     }
@@ -95,18 +122,23 @@ unsigned int size(void)
 // Returns true if word is in dictionary else false
 bool check(const char *word)
 {
-    node *ptr = hashtable[hash(word)];
+    char word_lower[LENGTH + 1] = "\0";
+    int i = 0;
+    while (word[i] != '\0')
+    {
+        word_lower[i] = tolower(word[i]);
+        i++;  
+    }
+
+    node *ptr = hashtable[hash(word_lower)];
+
+    if (!ptr)
+    {
+        return false;
+    }
+
     while (ptr)
     {
-        char word_lower[LENGTH + 1] = "\0";
-
-        int i = 0;
-        while (word[i] != '\0')
-        {
-            word_lower[i] = tolower(word[i]);
-            i++;  
-        }
-        
         if (strcmp(word_lower, ptr->word) == 0)
         {
             return true;

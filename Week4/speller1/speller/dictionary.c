@@ -4,13 +4,17 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include<string.h>
+#include <inttypes.h>
+#include <string.h>
 
 #include "dictionary.h"
 
 // Represents number of buckets in a hash table
+//65535
 //186019
-#define N 500009
+//500009
+//1000003
+#define N 65535
 
 // Represents a node in a hash table
 typedef struct node
@@ -25,26 +29,39 @@ node *hashtable[N];
 
 void unload_node(node *ptr);
 
-// Hashes word to a number between 0 and 25, inclusive, based on its first letter
-unsigned int hash(const char *word)
+//Hashes word to a number between 0 and 25, inclusive, based on its first letter
+// unsigned int hash(const char *word)
+// {
+//     // unsigned int hash = 5381;
+//     // int length = strlen(word);
+//     // for (unsigned int i = 0; i < length; i++)
+//     // {
+//     //     hash = ((hash << 5) + hash) + (word[i]);
+//     // }
+
+//     unsigned long hash = 5381;
+//     int c;
+
+//     while ((c = *word++))
+//         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+
+//     return hash % N;
+//     //return hash > N ? hash % N : hash;
+
+//     //return tolower(word[0]) - 'a';
+// }
+
+int hash(const char *s)
 {
-    // unsigned int hash = 5381;
-    // int length = strlen(word);
-    // for (unsigned int i = 0; i < length; i++)
-    // {
-    //     hash = ((hash << 5) + hash) + (word[i]);
-    // }
+    uint32_t hash = 0;
+    while (*s)
+    {
+        hash = (hash << 2) ^ *s; //(*s | 0x20);
+        s++;
+    }
 
-    unsigned long hash = 5381;
-    int c;
-
-    while ((c = *word++))
-        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
-
-    return hash % N;
-    //return hash > N ? hash % N : hash;
-
-    //return tolower(word[0]) - 'a';
+    // return a value between 0 and 65535
+    return (int)((hash >> 16) ^ (hash & 0xffff));
 }
 
 int num_collisions = 0;
@@ -52,6 +69,7 @@ int num_collisions = 0;
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
 {
+    //printf("Size of hashtable: %.2f MB\n", (sizeof(node *) * N) / 1000000.0f);
     // Initialize hash table
     for (int i = 0; i < N; i++)
     {
@@ -81,14 +99,14 @@ bool load(const char *dictionary)
         
         strcpy(word_node->word, word);
 
-        unsigned int word_hash = hash(word);
-        //printf("%i\n", word_hash);
-        if (hashtable[word_hash])
-        {
-            num_collisions++;
-            printf("\rCollisions: %i", num_collisions);
-            fflush(stdout);
-        }
+        int word_hash = hash(word);
+        // //printf("%i\n", word_hash);
+        // if (hashtable[word_hash])
+        // {
+        //     num_collisions++;
+        //     printf("\rCollisions: %i", num_collisions);
+        //     fflush(stdout);
+        // }
         
         word_node->next = hashtable[word_hash];
         hashtable[word_hash] = word_node;

@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+    <div class="container">
+        <!-- http://getbootstrap.com/docs/4.1/content/typography/ -->
+        <h1 class="mb-3">Form</h1>
+
+        <!-- http://getbootstrap.com/docs/4.1/components/forms/ -->
+        <form action="/form" method="post" class="needs-validation" novalidate>
+
+            <div class="form-group row">
+                <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="inputEmail3" placeholder="Email"
+                        name="email" value="" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter a valid email address.
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="inputPassword3" autocomplete="off"
+                           placeholder="Password" name="password" value="" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter a valid password.
+                    </div>
+                </div>
+            </div>
+                
+            <div class="form-group row">
+                <div class="col-sm-2">Hash</div>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="hashCheckbox"
+                                checked name="use_hash" value="true">
+                        <label class="form-check-label" for="hashCheckbox">
+                            Hash password?
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-2">Algorithm</div>
+                <div>
+                    <div class="form-check">
+                        <select class="form-control" id="algorithmSelect" name="algorithm">
+                            <option disabled>Secure</option>
+                            <option value="bcrypt" selected>BCrypt</option>
+                            <option value="argon2">Argon2</option>
+                            <option value="pbkdf2_sha512">PBKDF2</option>
+                            <option value="sha256_crypt">SHA-256</option>
+                            <option value="sha512_crypt">SHA-512</option>
+                            <option disabled>Insecure</option>
+                            <option value="md5_crypt">MD5</option>
+                            <option value="sha1_crypt">SHA-1</option>
+                            <option value="des_crypt">DES</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- http://getbootstrap.com/docs/4.1/components/buttons/ -->
+            <button class="btn btn-primary" type="submit">Submit</button>
+
+        </form>
+    </div>
+
+    <script>
+
+        document.getElementById('hashCheckbox').onchange = function() {
+            if (this.checked == true) {
+                document.getElementById("algorithmSelect").disabled = false;
+            }
+            else {
+                document.getElementById("algorithmSelect").disabled = true;
+            }
+        }
+
+    </script>
+    <script>
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+                });
+            }, false);
+        })();
+    </script>
+
+{% endblock %}

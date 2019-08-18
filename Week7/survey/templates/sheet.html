@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+    <table id="usersTable" class="table table-hover" style="width:100%">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Email</th>
+                <th scope="col">Password</th>
+                <th scope="col">Algorithm</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ user["email"] }}</td>
+                    <td>{{ user["password"] }}</td>
+                    <td>{{ user["algorithm"] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        $(document).ready(function() {
+            $('#usersTable').DataTable(
+                { "scrollX": true,
+                "scrollCollapse": true,
+                "responsive": true}
+            );
+        } );
+    </script>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form class="needs-validation" novalidate action="/register" method="post">
+        <div class="form-group">
+            <input id="userName" autocomplete="off" autofocus class="form-control" name="username" 
+                   placeholder="Username" type="text" required oninput="checkUsername(this.value)">
+            <div id="userNameError" class="invalid-feedback">Invalid username.</div>
+        </div>
+        <div class="form-group">
+            <input id="password" class="form-control" name="password" placeholder="Password" type="password" required 
+                   oninput="checkPassword()">
+            <div class="invalid-feedback">Please choose a password.</div>
+        </div>
+        <div class="form-group">
+            <input id="confirm" class="form-control" name="confirmation" 
+                   placeholder="Confirm Password" type="password" required oninput="checkPassword()">
+            <div id="invalidConfirm" class="invalid-feedback">Passwords do not match</div>
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+
+    <script>
+        var usernameInput = document.getElementById("userName");
+        var usernameError = document.getElementById("userNameError");
+        function checkUsername(username) {
+            $.getJSON({
+            url: "/check",
+            data: {username: username},
+            success: function(data){
+                    console.log(data);
+                    if (!data){
+                        usernameInput.setCustomValidity("Username unavailable.");
+                        usernameError.innerHTML = "Username unavailable."
+                    }
+                    else {
+                        usernameInput.setCustomValidity('');
+                        usernameError.innerHTML = "Invalid username."
+                    }
+                    usernameInput.checkValidity();
+                }
+            })
+        }
+    </script>
+    <script>
+        var passwordInput = document.getElementById("password");
+        var passwordConfirm = document.getElementById("confirm");
+        var passwordError = document.getElementById("invalidConfirm");
+        function checkPassword() {
+            if (passwordInput.value !== passwordConfirm.value) {
+                passwordConfirm.setCustomValidity("Passwords do not match.");
+                passwordConfirm.innerHTML = "Passwords do not match."
+            }
+            else {
+                passwordConfirm.setCustomValidity('');
+                passwordConfirm.innerHTML = "Invalid password."
+            }
+            passwordConfirm.checkValidity();
+        }
+    </script>
+    <script>
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+                });
+            }, false);
+        })();
+    </script>
+{% endblock %}

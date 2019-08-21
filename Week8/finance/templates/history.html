@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    History
+{% endblock %}
+
+{% block main %}
+
+    {% if transactions %}
+        <table id="stocks" class="table table-hover" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction["type"] }}</td>
+                        <td>{{ transaction["symbol"] }}</td>
+                        <td>{{ "$%.2f"|format(transaction["price"]) }}</td>
+                        <td>{{ transaction["quantity"] }}</td>
+                        <td>{{ "$%.2f"|format(transaction["total"]) }}</td>
+                        <td>{{ transaction["timestamp"] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <script>
+            $(document).ready(function() {
+                $('#stocks').DataTable(
+                    { "scrollX": true,
+                    "scrollCollapse": true,
+                    "responsive": true,
+                    "order":[[5, "desc"]]}
+                );
+            } );
+        </script>
+    {% else %}
+        <h2>You have no previous transactions.</h2>
+    {% endif %}
+    
+{% endblock %}

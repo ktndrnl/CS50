@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Sell
+{% endblock %}
+
+{% block main %}
+    {% if stocks %}
+        <form action="/sell" method="post">
+            <div class="form-group">
+                <select autofocus class="form-control" name="symbol">
+                    {% for key, value in stocks.items() %}
+                        <option value={{ key }}>{{ key }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <input autocomplete="off" autofocus class="form-control" name="shares" placeholder="Amount" type="number" min="1">
+            </div>
+            <button class="btn btn-primary" type="submit">Sell</button>
+        </form>
+    {% else %}
+        <h2>You have no stocks to sell.</h2>
+    {% endif %}
+{% endblock %}

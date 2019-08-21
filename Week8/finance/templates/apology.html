@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Apology
+{% endblock %}
+
+{% block main %}
+    <!-- 
+    <img alt="{{ top }}" class="border" src="http://memegen.link/custom/{{ top | urlencode }}/{{ bottom | urlencode }}.jpg?alt=https://i.imgur.com/CsCgN7Ll.png" title="{{ top }}">
+    -->
+
+    <div class="jumbotron jumbotron-fluid bg-warning">
+        <div class="container">
+            <h1 class="display-4">
+                {{ top }}
+            </h1>
+            <p class="lead">
+                {{ bottom }}
+            </p>
+        </div>
+    </div>
+
+{% endblock %}

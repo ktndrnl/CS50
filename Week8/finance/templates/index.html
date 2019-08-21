@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-sm">
+                Balance: {{ "$%.2f"|format(user["balance"]) }}
+            </div>
+            <div class="col-sm">
+                Stock Value: {{ "$%.2f"|format(user["holdings"]) }}
+            </div>
+            <div class="col-sm">
+                Total Value: {{ "$%.2f"|format(user["balance"] + user["holdings"]) }}
+            </div>
+        </div>
+    </div>
+
+    {% if stocks %}
+        <table id="stocks" class="table table-hover" style="width:100%">
+            <thead>
+                <tr>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Shares</th>
+                    <th scope="col">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, value in stocks.items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ "$%.2f"|format(value["price"]) }}</td>
+                        <td>{{ value["quantity"] }}</td>
+                        <td>{{ "$%.2f"|format(value["value"]) }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <script>
+            $(document).ready(function() {
+                $('#stocks').DataTable(
+                    { "scrollX": true,
+                    "scrollCollapse": true,
+                    "responsive": true}
+                );
+            } );
+        </script>
+    {% else %}
+        <h2>You have no stocks.</h2>
+    {% endif %}
+    
+{% endblock %}

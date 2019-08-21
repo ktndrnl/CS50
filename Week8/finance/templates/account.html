@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Account
+{% endblock %}
+
+{% block main %}
+
+<div class="form-group m-3">
+    <p>Username: {{ user["username"] }}</p>
+</div>
+
+<form action="/password_change" method="post">
+    <div class="form-group m-3">
+        <label for="newPassword" class="col-sm-2 col-form-label">New Password:</label>
+        <input id="newPassword" autocomplete="off" autofocus class="form-control" name="password" 
+               placeholder="New Password" type="password" required>
+    </div>
+    <button class="btn btn-primary" type="submit">Change Password</button>
+</form>
+{% endblock %}

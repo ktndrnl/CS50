@@ -1,6 +1,5 @@
-from datetime import datetime, timedelta
-
 import json
+from datetime import datetime, timedelta
 
 from flask import current_app
 from rauth import OAuth2Service
@@ -127,8 +126,6 @@ class TwitchAPI(object):
             if followed_channel.id not in [int(channel['id']) for channel in channels]:
                 self.user.unfollow(followed_channel)
 
-        db.session.commit()
-
     def update_followed_videos(self):
         videos = self.get_followed_videos()
         for video in videos:
@@ -141,5 +138,3 @@ class TwitchAPI(object):
                 result.update_video(video)
             else:
                 break
-        self.user.last_api_update = datetime.utcnow()
-        db.session.commit()

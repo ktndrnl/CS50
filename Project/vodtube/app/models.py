@@ -1,10 +1,9 @@
 from datetime import datetime, timedelta
-from dateutil import parser
 
+from dateutil import parser
 from flask_login import UserMixin
 
 from app import db, login
-
 
 followers = db.Table(
     'followers',

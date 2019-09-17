@@ -3,8 +3,8 @@ from flask_login import login_user, logout_user, current_user, login_required
 
 from app import db
 from app.auth import bp
-from app.models import User
 from app.auth.oauth import TwitchSignIn
+from app.models import User
 from app.twitch.api import TwitchAPI
 
 

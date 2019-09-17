@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <div class="m-4">
+        {% if videos %}
+            <div class="row justify-content-center">
+                {% for video in videos %}
+                    {% include '_video_card.html' %}
+                {% endfor %}
+            </div>
+            <nav aria-label="...">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item{% if not prev_url %} disabled{% endif %}">
+                        <a href="{{ prev_url or '#' }}" class="page-link">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% for page_num in pages.iter_pages() %}
+                        {% if page_num %}
+                            {% if page_num != pages.page %}
+                                <li class="page-item">
+                                    <a href="{{ url_for('main.index', page=page_num) }}"
+                                       class="page-link">{{ page_num }}</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item active">
+                                    <a href="#" class="page-link">{{ page_num }}</a>
+                                </li>
+                            {% endif %}
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a href="#" class="page-link">...</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    <li class="page-item{% if not next_url %} disabled{% endif %}">
+                        <a href="{{ next_url or '#' }}" class="page-link">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        {% else %}
+            <div class="text-center align-middle my-5 mx-auto align-items-center">
+                <h2>Nothing found.</h2>
+                <br>
+                <a class="btn btn-primary btn-lg" href="{{ url_for('twitch.update') }}">
+                    Refresh VODs</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+    {{ moment.lang(g.locale) }}
+{% endblock %}

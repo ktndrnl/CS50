@@ -1,0 +1,34 @@
+<div class="col-md-6 col-lg-4 col-xl-3 mb-3">
+    <div class="card h-100">
+        {% if (video.thumnail_url == None or video.thumbnail_url == '') %}
+            <img class="card-img-top"
+                 src="https://static-cdn.jtvnw.net/ttv-static/404_preview-320x180.jpg"
+                 alt="thumbnail"/>
+        {% else %}
+            <img class="card-img-top"
+                 src="{{ video.thumbnail_url | replace("%{width}", "320") | replace("%{height}", "180") }}"
+                 alt="thumbnail"/>
+        {% endif %}
+        <div class="card-img-overlay" style="padding: .5rem">
+            <p class="card-text"><span class="badge badge-dark">{{ video.duration }}</span></p>
+        </div>
+        <div class="card-body" style="position: relative">
+            <h5 class="card-title crop-text-1" title="{{ video.title }}">
+                <a href="{{ video.url }}">{{ video.title }}</a>
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted">
+                <a href="https://www.twitch.tv/{{ video.channel.login_name }}/videos"
+                   class="text-muted" style="text-decoration: none">
+                    <img src="{{ video.channel.avatar() }}" alt="" class="rounded-circle mr-1"
+                         style="width: 36px; height: auto">
+                </a>
+                <a href="https://www.twitch.tv/{{ video.channel.login_name }}" class="text-muted">
+                    {{ video.channel.display_name }}
+                </a>
+            </h6>
+            <div class="card-subtitle text-muted text-lg-right mt-1">
+                {{ moment(video.created_at).fromNow() }} - {{ moment(video.created_at).format('lll') }}
+            </div>
+        </div>
+    </div>
+</div>

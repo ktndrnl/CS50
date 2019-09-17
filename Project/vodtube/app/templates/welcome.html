@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <script src="https://kit.fontawesome.com/1379668e8e.js"></script>
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+    <div class="container d-flex align-items-center vh-100">
+        <div class="jumbotron mx-auto align-middle my-5">
+            <div class="container text-center">
+                <h2 class="mb-4 mt-0">vodtube</h2>
+                <br>
+                <a class="btn btn-primary btn-lg" href="{{ url_for('auth.login') }}">
+                    <i class="fab fa-twitch"></i> Login with Twitch</a>
+            </div>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-primary text-lg-center mt-4" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+{% endblock %}
